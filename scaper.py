@@ -12,7 +12,7 @@ class SearchEngine:
     @staticmethod
     def search(query, sleep=True):
         if sleep: # Prevents loading too many pages too soon
-            time.sleep(randint(10, 100))
+            time.sleep(randint(10, 15))
         temp_url = '+'.join(query.split()) #for adding + between words for the query
         url = 'http://www.ask.com/web?q=' + temp_url
         soup = BeautifulSoup(requests.get(url, headers=USER_AGENT).text,"html.parser")
@@ -35,14 +35,14 @@ class SearchEngine:
         return results
 
 def json_output(data):
-    with open('output.json', 'w+') as outfile:
+    with open('fast_output.json', 'w+') as outfile:
         json.dump(data, outfile)
 
 def read_queries(input_file):
     queries = []
     f = open(input_file, "r")
     for query in f:
-        queries.append(query)
+        queries.append(query.strip())
     return queries
 #############Driver code############
 
@@ -54,5 +54,6 @@ for query in queries:
     results = SearchEngine.search(query)
     dict[query] = results
 json_output(dict)
+
 
 ####################################
